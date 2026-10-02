@@ -62,3 +62,10 @@ actual call. Observing `HALF_OPEN` does not consume the probe.
 
 The breaker takes a `clock` callable (default `time.monotonic`). Inject a fake
 in tests so behaviour is deterministic and never depends on wall-clock time.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
